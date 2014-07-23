@@ -1,0 +1,8 @@
+{% load url from future %}
+{% load i18n %}
+
+{% for brand in trademark.brands.all %}
+    <div>
+        {{ brand }} - <a href="{% url 'trademark:brand_detail' brand.slug brand.pk %}" class="btn pull-right">{% trans "View brand details" %}</a>
+    </div>
+{% endfor %}
