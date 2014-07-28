@@ -15,6 +15,20 @@ class AbstractBrand(models.Model):
     def __unicode__(self):
         return self.name
 
+    def calc_price(self, price):
+        data = {'price': price}
+
+        if self.formula == "":
+            return price
+
+        try:
+            code = compile(self.formula, '', 'eval')
+            calced_price = eval(code, {}, data)
+        except:
+            raise Exception('Wong formula')
+
+        return calced_price
+
     class Meta:
         ordering = ('name',)
         abstract = True
