@@ -14,6 +14,11 @@ class TrademarksDashboardApplication(Application):
     trademark_update_view = views.TrademarkUpdateView
     trademark_delete_view = views.TrademarkDeleteView
 
+    brand_list_view = views.BrandListView
+    brand_create_view = views.BrandCreateView
+    brand_update_view = views.BrandUpdateView
+    brand_delete_view = views.BrandDeleteView
+
     def get_urls(self):
         urlpatterns = patterns('',
             url(
@@ -35,6 +40,26 @@ class TrademarksDashboardApplication(Application):
                 r'^delete/(?P<pk>[\d]+)/$',
                 self.trademark_delete_view.as_view(),
                 name='trademark-delete'
+            ),
+            url(
+                r'^brands/$',
+                self.brand_list_view.as_view(),
+                name='brand-list'
+            ),
+            url(
+                r'^brands/create/$',
+                self.brand_create_view.as_view(),
+                name='brand-create'
+            ),
+            url(
+                r'^brands/update/(?P<pk>[\d]+)/$',
+                self.brand_update_view.as_view(),
+                name='brand-update'
+            ),
+            url(
+                r'^brands/delete/(?P<pk>[\d]+)/$',
+                self.brand_delete_view.as_view(),
+                name='brand-delete'
             ),
         )
         return self.post_process_urls(urlpatterns)

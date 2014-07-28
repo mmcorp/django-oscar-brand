@@ -1,57 +1,80 @@
 from django import forms
 from django.forms import models as modelforms
 from django.forms.formsets import formset_factory
+from django.utils.translation import ugettext_lazy as _, ugettext
 from django.db.models import Q, get_model
 
 
 Brand = get_model('trademark', 'Brand')
 
 
+class BrandForm(forms.ModelForm):
+
+    class Meta:
+        # exclude = ('description', )
+        model = get_model('trademark', 'Brand')
+
+
+class BrandInlineForm(BrandForm):
+
+    class Meta:
+        exclude = ('description', )
+        model = get_model('trademark', 'Brand')
+
+
 class TrademarkForm(forms.ModelForm):
 
     class Meta:
         model = get_model('trademark', 'Trademark')
-        exclude = ('slug', 'opening_periods', )
+        # exclude = ('slug', )
         widgets = {
             'description': forms.Textarea(attrs={'cols': 40, 'rows': 10}),
         }
 
-    def clean_reference(self):
-        ref = self.cleaned_data['reference']
-        if ref == "":
-            return None
-        return ref
+
+class DashboardTrademarkSearchForm(forms.Form):
+    name = forms.CharField(label=_('Trademark name'), required=False)
+    # address = forms.CharField(label=_('Address'), required=False)
+
+    def is_empty(self):
+        d = getattr(self, 'cleaned_data', {})
+        empty = lambda key: not d.get(key, None)
+        return empty('name') and empty('address')
+
+    def apply_address_filter(self, qs, value):
+        words = value.replace(',', ' ').split()
+        q = [Q(address__search_text__icontains=word) for word in words]
+        return qs.filter(*q)
+
+    def apply_name_filter(self, qs, value):
+        return qs.filter(name__icontains=value)
+
+    def apply_filters(self, qs):
+        for key, value in self.cleaned_data.items():
+            if value:
+                qs = getattr(self, 'apply_%s_filter' % key)(qs, value)
+        return qs
 
 
-# class BrandForm(forms.ModelForm):
+class DashboardBrandSearchForm(forms.Form):
+    name = forms.CharField(label=_('Brand name'), required=False)
+    # address = forms.CharField(label=_('Address'), required=False)
 
-#     class Meta:
-#         model = Brand
+    def is_empty(self):
+        d = getattr(self, 'cleaned_data', {})
+        empty = lambda key: not d.get(key, None)
+        return empty('name') and empty('address')
 
+    def apply_address_filter(self, qs, value):
+        words = value.replace(',', ' ').split()
+        q = [Q(address__search_text__icontains=word) for word in words]
+        return qs.filter(*q)
 
-# class BrandFormset(modelforms.BaseInlineFormSet):
-#     extra = 10
-#     can_order = False
-#     can_delete = True
-#     max_num = 30 # Reasonably safe number of maximum period intervals per day
-#     absolute_max = 30
-#     model = Brand
-#     fk = 'id'
-#     validate_max = True
+    def apply_name_filter(self, qs, value):
+        return qs.filter(name__icontains=value)
 
-#     def form(self, *args, **kwargs):
-#         form = BrandForm(*args, **kwargs)
-#         return form
-
-
-
-# class BrandInline(object):
-#     def __init__(self, model, request, instance, kwargs=None, view=None):
-#         self.data = request.POST
-#         self.instance = instance
-
-#     def construct_formset(self):
-#         return BrandFormset(
-#             self.data or None,
-#             self.instance,
-#         )
+    def apply_filters(self, qs):
+        for key, value in self.cleaned_data.items():
+            if value:
+                qs = getattr(self, 'apply_%s_filter' % key)(qs, value)
+        return qs

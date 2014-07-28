@@ -1,0 +1,39 @@
+{% extends 'dashboard/layout.html' %}
+{% load url from future %}
+{% load i18n %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+    <li>
+        <a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
+        <span class="divider">/</span>
+    </li>
+    <li>
+        <a href="{% url 'trademarks-dashboard:brand-list' %}">{% trans "Stores" %}</a>
+        <span class="divider">/</span>
+    </li>
+    <li>
+        {{ object.name }}
+        <span class="divider">/</span>
+    </li>
+    <li class="active">{% trans "Delete brand?" %}</li>
+</ul>
+{% endblock %}
+
+{% block headertext %}
+    {% trans "Delete brand?" %}
+{% endblock %}
+
+{% block dashboard_content %}
+<form action="." method="post">
+    {% csrf_token %}
+    {% blocktrans with trademark_name=object.name %}
+    <p>Delete brand <strong>{{ trademark_name }}</strong> - are you sure?</p>
+    {% endblocktrans %}
+    <div class="form-actions">
+        <button type="submit" class="btn btn-large btn-danger">{% trans "Delete" %}</button>
+        {% trans "or" %} 
+        <a href="{% url 'trademarks-dashboard:brand-list' %}">{% trans "cancel" %}</a>.
+    </div>
+</form>
+{% endblock %}
