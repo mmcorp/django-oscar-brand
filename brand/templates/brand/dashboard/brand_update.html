@@ -3,10 +3,10 @@
 {% load i18n %}
 {% load staticfiles %}
 
-{% block body_class %}trademarks{% endblock %}
+{% block body_class %}brands{% endblock %}
 
 {% block extrahead %}
-    <link rel='stylesheet' type='text/css' href="{% static "trademarks/css/trademarks.css" %}" />
+    <link rel='stylesheet' type='text/css' href="{% static "brands/css/brands.css" %}" />
 {% endblock %}
 
 {% block title %}
@@ -20,7 +20,7 @@
         <span class="divider">/</span>
     </li>
     <li>
-    <a href="{% url 'trademarks-dashboard:trademark-list' %}">{% trans "Trademarks" %}</a>
+    <a href="{% url 'brand-dashboard:brand-list' %}">{% trans "Brands" %}</a>
         <span class="divider">/</span>
     </li>
     <li class="active">{{ title }}</li>
@@ -55,29 +55,9 @@
             {{form}}
         </div>
 
-        <div class="well">
-            {% with formset=inlines.0 %}
-                {% for brand_form in formset %}
-                    {% if brand_form.non_field_errors %}
-                        {% for error in brand_form.non_field_errors %}
-                                <div class="alert alert-error control-group error">
-                                    <span class="help-inline"><i class="icon-exclamation-sign"></i> {{ error }}</span>
-                                </div>
-                            {% endfor %}
-                    {% endif %}
-                    <div class="brands-block well">
-                        {% for field in brand_form %}
-                            {% include "trademark/dashboard/partials/form_field.html" %}
-                        {% endfor %}
-                    </div>
-                {% endfor %}
-                {{formset.management_form}}
-            {% endwith %}
-        </div>
-
         <div class="control-group">
             <div class="pull-right">
-                <a href="{% url 'trademarks-dashboard:trademark-list' %}">{% trans "Cancel" %}</a>
+                <a href="{% url 'brand-dashboard:brand-list' %}">{% trans "Cancel" %}</a>
                 {% trans "or" %}
                 <button class="btn btn-primary btn-large" type="submit">{% trans "Save" %}</button>
             </div>

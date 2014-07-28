@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% load url from future %}
+{% load i18n %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load currency_filters %}
+
+{% block extrahead %}
+    <style>map img { max-width: none; }</style>
+    <link rel="stylesheet" href="{{ STATIC_URL }}brand/css/brand.css" />
+{% endblock %}
+
+{% block title %}
+{{ queryset_description }} | {{ block.super }}
+{% endblock %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+    <li>
+        <a href="{% url 'promotions:home' %}">{% trans "Home" %}</a>
+        <span class="divider">/</span>
+    </li>
+    <li>
+        <a href="{% url 'brand:index' %}">{% trans "Brands" %}</a>
+        <span class="divider">/</span>
+    </li>
+    <li class="active">{{ queryset_description }}</li>
+</ul>
+{% endblock %}
+
+{% block headertext %}
+{{ queryset_description }}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row-fluid">
+        {% if brand_list %}
+            <div class="span12 view-brands">
+                    <h3>{%trans "All brands"%}</h3>
+                    <ul class="nav nav-tabs nav-stacked">
+                    {% for brand in brand_list %}
+                    <li>
+                        <a href="{% url 'brand:detail' brand.slug brand.pk %}">
+                            {{ brand.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                    </ul>
+            </div>
+        {% else %}
+        <p>{% trans "No brand data available." %}</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% load url from future %}
+{% load i18n %}
+{% load thumbnail %}
+
+{% block extrahead %}
+    <style>map img { max-width: none; }</style>
+    <link rel="stylesheet" href="{{ STATIC_URL }}brand/css/brands.css" />
+{% endblock %}
+
+{% block title %}
+    {{ brand.name }} | {{ block.super }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li>
+            <a href="{% url 'promotions:home' %}">{% trans "Home" %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="{% url 'brand:index' %}">{% trans "Brands" %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li class="active">{{ brand.name }}</li>
+        <li class="pull-right"><a href="{% url 'brand:index' %}"><i class="icon-arrow-left"></i> {% trans "View all brands" %}</a></li>
+    </ul>
+{% endblock %}
+
+{% block headertext %}{{ brand.name }}{% endblock %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span12 brand-details">
+            {% if brand.image %}
+                {% thumbnail brand.image "400x400" as im %}
+                <img alt="{{ brand.name }}" src="{{ im.url }}" width="{{ im.width}}" height="{{ im.height }}" />
+                {% endthumbnail %}
+            {% endif %}
+            <h3>{% trans "Country" %}</h3>
+            {{ brand.country }}
+
+        </div>
+        <div class="span8">
+            {{ brand.description|safe }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block extrascripts %}
+    {{ block.super }}
+    {# include "brand/partials/extrascripts.html" #}
+{% endblock %}
+
+{% block onbodyload %}
+    brands.maps.initTrademark();
+{% endblock %}

@@ -7,7 +7,7 @@ except ImportError:
     pass
 else:
     add_introspection_rules([], [
-        "^trademark\.models\.fields\.FormulaField$"])
+        "^brand\.models\.fields\.FormulaField$"])
 
 
 class FormulaField(models.CharField):

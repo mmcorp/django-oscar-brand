@@ -16,7 +16,7 @@
         </li>
         {% if not filterform.is_empty %}
             <li>
-                <a href="{% url 'trademarks-dashboard:brand-list' %}">{% trans "Brands" %}</a>
+                <a href="{% url 'brand-dashboard:brand-list' %}">{% trans "Brands" %}</a>
                 <span class="divider">/</span>
             </li>
         {% endif %}
@@ -26,7 +26,7 @@
 
 {% block header %}
     <div class="page-header">
-        <a href="{% url 'trademarks-dashboard:brand-create' %}" class="btn btn-large btn-primary pull-right"><i class="icon-plus"></i> {% trans "Create new brand" %}</a>
+        <a href="{% url 'brand-dashboard:brand-create' %}" class="btn btn-large btn-primary pull-right"><i class="icon-plus"></i> {% trans "Create new brand" %}</a>
         <h1>{% trans "Brand Management" %}</h1>
     </div>
 {% endblock header %}
@@ -55,35 +55,28 @@
             <table class="table table-striped table-bordered">
                 <tr>
                     <th>{% trans "Name" %}</th>
-                    <th>{% trans "Formula" %}</th>
+                    <th>{% trans "Formula of price" %}</th>
                     <th>{% trans "Status" %}</th>
-                    <th>{% trans "Brands amount" %}</th>
+                    <th>{% trans "Product amount" %}</th>
                     <th></th>
                 </tr>
                 {% for brand in brand_list %}
                     <tr>
-                        <th><a href="{% url 'trademarks-dashboard:brand-update' brand.pk %}">{{ brand.name }}</a></th>
-                        <td>{{ brand.formula }}</td>
-                        <td>
-                            {% if brand.is_active %}
-                                <span class="label label-success">{% trans "Active" %}</span>
-                            {% else %}
-                                <span class="label label-danger">{% trans "Inactive" %}</span>
-                            {% endif %}
-                        </td>
-                        <td>{{ brand.brands.count }}</td>
+                        <th><a href="{% url 'brand-dashboard:brand-update' brand.pk %}">{{ brand.name }}</a></th>
+                        <td><span class="label label-success">{{ brand.formula }}</span></td>
+                        <td>{{ brand.products.count }}</td>
                         <td>
                             <div class="btn-group">
-                                <a class="btn btn-info" href="{% url 'trademark:brand_detail' brand.slug brand.id %}">{% trans "View on site" %}</a>
+                                <a class="btn btn-info" href="{% url 'brand:detail' brand.slug brand.id %}">{% trans "View on site" %}</a>
                                  <button class="btn dropdown-toggle" data-toggle="dropdown">
                                      <span class="caret"></span>
                                  </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="{% url 'trademarks-dashboard:brand-update' brand.id %}">{% trans "Edit" %}</a>
+                                        <a href="{% url 'brand-dashboard:brand-update' brand.id %}">{% trans "Edit" %}</a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'trademarks-dashboard:brand-delete' brand.id %}">{% trans "Delete" %}</a>
+                                        <a href="{% url 'brand-dashboard:brand-delete' brand.id %}">{% trans "Delete" %}</a>
                                     </li>
                                 </ul>
                             </div>
