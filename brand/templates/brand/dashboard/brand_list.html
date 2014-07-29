@@ -62,7 +62,13 @@
                 {% for brand in brand_list %}
                     <tr>
                         <th><a href="{% url 'brand-dashboard:brand-update' brand.pk %}">{{ brand.name }}</a></th>
-                        <td><span class="label label-success">{{ brand.formula }}</span></td>
+                        <td>
+                            {% if brand.formula %}
+                                <span class="label label-success">{{ brand.formula }}</span>
+                            {% else %}
+                                <span class="label label-cancel">{% trans "No" %}</span>
+                            {% endif %}
+                        </td>
                         <td>{{ brand.products.count }}</td>
                         <td>
                             <div class="btn-group">

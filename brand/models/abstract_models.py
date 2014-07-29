@@ -18,7 +18,7 @@ class AbstractBrand(models.Model):
     def calc_price(self, price):
         data = {'price': price}
 
-        if self.formula == "":
+        if self.formula == "" or self.formula is None:
             return price
 
         try:
