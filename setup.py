@@ -3,7 +3,7 @@ import os
 from setuptools import setup, find_packages
 
 setup(
-    name='django-oscar-brands',
+    name='django-oscar-brand',
     version="0.0.1",
     url='https://github.com/tangentlabs/django-oscar-brands',
     author="Milkov Vladimir",
