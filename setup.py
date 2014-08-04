@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-oscar-brand',
-    version="0.0.1",
+    version="0.0.4",
     url='https://github.com/tangentlabs/django-oscar-brands',
     author="Milkov Vladimir",
     author_email="vladimir@milkov.pro",
